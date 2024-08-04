@@ -10,6 +10,7 @@ webpack.config.js
 # local env files
 .env.local
 .env.*.local
+.env
 .cache
 # Log files
 npm-debug.log*

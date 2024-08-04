@@ -26,6 +26,7 @@
   "license": "ISC",
   "dependencies": {
     "@ethersproject/solidity": "^5.7.0",
+    "@prisma/client": "^5.17.0",
     "@types/node-telegram-bot-api": "^0.61.6",
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/sdk-core": "^3.2.2",
@@ -54,6 +55,7 @@
     "externals-dependencies": "^1.0.4",
     "javascript-obfuscator": "^4.0.2",
     "path": "^0.12.7",
+    "prisma": "^5.17.0",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",

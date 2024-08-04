@@ -1,0 +1,221 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model analyzedata {
+  id          Int      @id @default(autoincrement())
+  chain_id    Int?     @default(0)
+  address     String?  @db.VarChar(42)
+  holders     Int?     @default(0)
+  top_holder  String?  @db.Text
+  count       Int?     @default(0)
+  price       String?  @db.VarChar(255)
+  buy_list    String?  @db.Text
+  sell_list   String?  @db.Text
+  buy_amount  Decimal? @db.Decimal(10, 5)
+  sell_amount Decimal? @db.Decimal(10, 5)
+  smart_money Int?     @default(0)
+  inflow      Decimal? @db.Decimal(10, 5)
+  create_time Int?     @default(0)
+
+  @@index([address], map: "address")
+  @@index([create_time], map: "createTime")
+}
+
+model contract {
+  address             String  @id @db.VarChar(42)
+  chain_id            Int?    @default(0)
+  block_number        Int?    @default(0)
+  name                String? @db.VarChar(255)
+  symbol              String? @db.VarChar(255)
+  total_supply        String? @db.VarChar(255)
+  decimals            Int?    @default(0)
+  owner               String? @db.VarChar(42)
+  is_add_liquidity    Int?    @default(0) @db.TinyInt
+  is_remove_liquidity Int?    @default(0) @db.TinyInt
+  is_check_price      Int?    @default(0) @db.TinyInt
+  pools               String? @db.Text
+  liquidity_pools     String? @db.Text
+  reserve0            String? @db.VarChar(255)
+  first_price         String? @db.VarChar(255)
+  first_pool_balance  String? @db.VarChar(255)
+  liquidity_total     String? @db.VarChar(255)
+  is_get_swap_fee     Int?    @default(0) @db.TinyInt
+  buy_fee             Int?    @default(0)
+  sell_fee            Int?    @default(0)
+  creator             String? @db.VarChar(42)
+  update_time         Int?    @default(0)
+  create_time         Int?    @default(0)
+  tasks               task[]
+}
+
+model event {
+  id                  Int     @id @default(autoincrement())
+  hash                String? @db.VarChar(66)
+  chain_id            Int?    @default(0)
+  from_address        String? @db.VarChar(42)
+  to_address          String? @db.VarChar(42)
+  in_target           String? @db.VarChar(42)
+  in_amount           String? @db.VarChar(255)
+  in_swap_fee         Int?    @default(0)
+  swap_out_address    String? @db.VarChar(42)
+  out_target          String? @db.VarChar(42)
+  out_amount          String? @db.VarChar(255)
+  out_swap_fee        Int?    @default(0)
+  swap_in_address     String? @db.VarChar(42)
+  swap_routers        String? @db.Text
+  effective_gas_price String? @db.VarChar(255)
+  gas_used            String? @db.VarChar(255)
+  block_number        Int?    @default(0)
+  create_time         Int?    @default(0)
+
+  @@index([swap_in_address], map: "swapInAddress")
+  @@index([swap_out_address], map: "swapOutAddress")
+}
+
+model setting {
+  id                  Int      @id @default(autoincrement())
+  telegram_id         BigInt?
+  chain_id            Int?     @default(0)
+  manual_gas_fee      Int?     @default(0)
+  follow_gas_fee      Int?     @default(0)
+  rush_gas_fee        Int?     @default(0)
+  rush_time           Int?     @default(0)
+  sell_percent        Int?     @default(0)
+  follow_swap_fee     Int?     @default(0)
+  manual_swap_fee     Int?     @default(0)
+  reaction_id         Int?     @default(0)
+  reaction_method     String?  @db.VarChar(20)
+  default_address     String?  @db.VarChar(42)
+  default_private_key String?  @db.VarChar(66)
+  set_type            Int?     @default(0) @db.TinyInt
+  log_id              Int?     @default(0)
+  amount              Decimal? @default(0.00000) @db.Decimal(10, 5)
+  follow_amount       Decimal? @default(0.00000) @db.Decimal(10, 5)
+  query               String?  @db.Text
+  rush_amount         Decimal? @default(0.00000) @db.Decimal(10, 5)
+  create_time         Int?     @default(0)
+}
+
+model smartmoney {
+  id          Int     @id @default(autoincrement())
+  chain_id    Int?    @default(0)
+  address     String? @db.VarChar(42)
+  create_time Int?    @default(0)
+}
+
+model smartmoneyaddress {
+  id          Int     @id @default(autoincrement())
+  chain_id    Int?    @default(0)
+  address     String? @db.VarChar(42)
+  count       Int?    @default(0)
+  create_time Int?    @default(0)
+}
+
+model task {
+  id            Int     @id @default(autoincrement())
+  chain_id      Int?    @default(0)
+  address       String? @db.VarChar(42)
+  private_key   String? @db.VarChar(66)
+  target        String? @db.VarChar(42)
+  telegram_id   BigInt?    @default(0)
+  telegram_name String? @db.VarChar(255)
+  amount        String? @db.VarChar(255)
+  percent       Int?    @default(0)
+  pool_percent  Int?    @default(0)
+  type          Int?    @default(0) @db.TinyInt
+  encode_data   String? @db.Text
+  send_gas_fee  Int?    @default(0)
+  swap_fee      Int?    @default(0)
+  gas_fee       Int?    @default(0)
+  status        Int?    @default(0) @db.TinyInt
+  start_time    Int?    @default(0)
+  create_time   Int?    @default(0) 
+  targetContract      contract?  @relation(fields: [target], references:[address])
+}
+
+model transferlog {
+  id            Int     @id @default(autoincrement())
+  hash          String? @db.VarChar(66)
+  chain_id      Int?    @default(0)
+  address       String? @db.VarChar(42)
+  target        String? @db.VarChar(42)
+  in_target     String? @db.VarChar(42)
+  in_amount     String? @db.VarChar(255)
+  out_target    String? @db.VarChar(42)
+  out_amount    String? @db.VarChar(255)
+  telegram_id   BigInt?    @default(0)
+  telegram_name String? @db.VarChar(255)
+  price         String? @db.VarChar(255)
+  type          Int?    @default(0) @db.TinyInt
+  status        Int?    @default(0) @db.TinyInt
+  transfer_type Int?    @default(0) @db.TinyInt
+  is_sell       Int?    @default(0) @db.TinyInt
+  symbol        String? @db.VarChar(255)
+  cost          String? @default("0.00000") @db.VarChar(255)
+  remark        String? @db.Text
+  create_time   Int?    @default(0)
+}
+
+model wallet {
+  id            Int     @id @default(autoincrement())
+  address       String? @db.VarChar(42)
+  private_key   String? @db.VarChar(66)
+  telegram_id   BigInt?    @default(0)
+  telegram_name String? @db.VarChar(255)
+  create_time   Int?    @default(0)
+}
+
+model watch {
+  id                 Int      @id @default(autoincrement())
+  address            String?  @db.VarChar(42)
+  name               String?  @db.VarChar(255)
+  telegram_id        BigInt?     @default(0)
+  telegram_name      String?  @db.VarChar(255)
+  follow_buy         Int?     @default(0) @db.TinyInt
+  follow_sell        Int?     @default(0) @db.TinyInt
+  follow_amount      Decimal? @db.Decimal(10, 5)
+  follow_gas_fee     Int?     @default(0)
+  follow_swap_fee    Int?     @default(0)
+  follow_private_key String?  @db.VarChar(66)
+  create_time        Int?     @default(0)
+}
+
+model watchlog {
+  id              Int     @id @default(autoincrement())
+  hash            String? @db.VarChar(66)
+  chain_id        Int?    @default(0)
+  address         String? @db.VarChar(42)
+  name            String? @db.VarChar(255)
+  in_target       String? @db.VarChar(42)
+  in_all_reserve  String? @db.VarChar(255)
+  in_price        String? @db.VarChar(255)
+  in_name         String? @db.VarChar(255)
+  in_pool         String? @db.VarChar(42)
+  in_decimals     Int?    @default(0)
+  in_version      String? @db.VarChar(20)
+  in_symbol       String? @db.VarChar(255)
+  out_target      String? @db.VarChar(42)
+  out_all_reserve String? @db.VarChar(255)
+  out_price       String? @db.VarChar(255)
+  out_name        String? @db.VarChar(255)
+  out_pool        String? @db.VarChar(42)
+  out_decimals    Int?    @default(0)
+  out_version     String? @db.VarChar(20)
+  out_symbol      String? @db.VarChar(255)
+  telegram_id     BigInt?    @default(0)
+  telegram_name   String? @db.VarChar(255)
+  price           String? @db.VarChar(255)
+  amount_in       String? @db.VarChar(255)
+  amount_out      String? @db.VarChar(255)
+  swap_fee        Int?    @default(0)
+  left_amount     String? @db.VarChar(255)
+  cost            String? @db.VarChar(255)
+  type            Int?    @default(0) @db.TinyInt
+  create_time     Int?    @default(0)
+}
