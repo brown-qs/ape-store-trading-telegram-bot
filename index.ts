@@ -1,8 +1,9 @@
 import { swapBot } from "./src/bot";
+import { adminUsernames } from './config.json'
 
 new swapBot({
   token: "7291988321:AAGwMxShg4r21gPP9vdRY4OU5a_vizSJutc",
-  adminName: "ape_store_trading_dev_bot",
+  admins: adminUsernames,
   chainIds: [1],
   dbData: {
     host: "127.0.0.1",

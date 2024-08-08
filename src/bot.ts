@@ -69,7 +69,7 @@ import {
   pickerTaskWalletTempalte,
 } from "./utils/templates";
 import BigNumber from "bignumber.js";
-import { PrismaClient, task } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -132,6 +132,9 @@ export class swapBot {
       });
     }
     this.checkRushList();
+  }
+  isAdmin(address) {
+    return this.params.admins.includes(address);
   }
   async checkRushList() {
     schedule.scheduleJob("*/2 * * * * *", async () => {
@@ -228,7 +231,7 @@ export class swapBot {
             );
             if (
               log.topics[0] ==
-                "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
+              "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
               inAddress == receiveAddress
             ) {
               outAmount += Number(
@@ -287,13 +290,13 @@ export class swapBot {
       } else {
         let gasUsed = transaction.hash
           ? Number(
-              (
-                ((transaction.transactionReceipt.gasUsed *
-                  transaction.transactionReceipt.effectiveGasPrice) /
-                  10 ** 18) *
-                this.sdks.get(chainId).wethPrice
-              ).toFixed(2)
-            )
+            (
+              ((transaction.transactionReceipt.gasUsed *
+                transaction.transactionReceipt.effectiveGasPrice) /
+                10 ** 18) *
+              this.sdks.get(chainId).wethPrice
+            ).toFixed(2)
+          )
           : 0;
         let cost = gasUsed;
         let transactionLog = {
@@ -1079,7 +1082,7 @@ export class swapBot {
             firstPrice = result.price;
             firstPoolBalance = result.poolBalance;
             blockNumber = result.firstBlockNumber;
-          } catch (error) {}
+          } catch (error) { }
           let updateItem = {
             address: item.address,
             liquidity_pools: JSON.stringify(item.LiquidityPools),
@@ -1149,7 +1152,7 @@ export class swapBot {
             let result = await getFirstPrice(item);
             firstPrice = result.price;
             firstPoolBalance = result.poolBalance;
-          } catch (error) {}
+          } catch (error) { }
           let updateItem = {
             address: item.address,
             liquidity_pools: JSON.stringify(item.LiquidityPools),
@@ -1204,7 +1207,7 @@ export class swapBot {
       }
     });
     this.bot.onText(/\/bindChannel/, async (msg, match) => {
-      if (msg.from.username == this.params.adminName) {
+      if (this.isAdmin(msg.from.username)) {
         this.chatId = msg.chat.id;
         this.bot.sendMessage(msg.chat.id, `Binding push channel success`);
       } else {
@@ -1215,7 +1218,7 @@ export class swapBot {
       }
     });
     this.bot.onText(/\/bindTopChannel/, async (msg, match) => {
-      if (msg.from.username == this.params.adminName) {
+      if (this.isAdmin(msg.from.username)) {
         this.topChartId = msg.chat.id;
         this.bot.sendMessage(msg.chat.id, `Binding push channel success`);
       } else {
@@ -1225,6 +1228,18 @@ export class swapBot {
         );
       }
     });
+    this.bot.onText(/\/whitelist (\w+)/, async (msg, match) => {
+      if (this.isAdmin(msg.from.username)) {
+        console.log({ msg, match })
+        // await prisma
+        this.bot.sendMessage(msg.chat.id, `Whitelist success`);
+      } else {
+        this.bot.sendMessage(
+          msg.chat.id,
+          `You are not an administrator that cannot be set up`
+        );
+      }
+    })
   }
   async formartWatchLog(swapEvent: swapEvent, watchList: any[]) {
     const web3 = new Web3();
@@ -1306,10 +1321,8 @@ export class swapBot {
     }
     let time = dayjs(new Date().getTime()).format("MM-DD HH:mm:ss");
     console.log(
-      `Belonging chain：${chainEnum[res.chainId]}，Block：${
-        res.blockNumber
-      }，Order：${res.transactions.length} Pen，Network speed ${
-        res.ms
+      `Belonging chain：${chainEnum[res.chainId]}，Block：${res.blockNumber
+      }，Order：${res.transactions.length} Pen，Network speed ${res.ms
       } ms，${time}`
     );
     let watchList: any = await prisma.watch.findMany();
@@ -2416,7 +2429,7 @@ export class swapBot {
         break;
       //set upprc
       case "smart_money":
-        if (query.from.username == this.params.adminName) {
+        if (query.from.username == this.params.admins) {
           this.bot
             .sendMessage(
               query.message.chat.id,
@@ -2443,7 +2456,7 @@ export class swapBot {
         }
         break;
       case "set_prc":
-        if (query.from.username == this.params.adminName) {
+        if (query.from.username == this.params.admins) {
           networkTemplate(this.bot, query, this.chainIds);
         } else {
           this.bot.sendMessage(
@@ -3162,9 +3175,9 @@ export class swapBot {
           transaction.transactionReceipt.logs.forEach((log) => {
             if (
               web3.utils.toChecksumAddress(log.address) ==
-                Config[contract.chain_id].stableContract[0] &&
+              Config[contract.chain_id].stableContract[0] &&
               log.topics[0] ==
-                "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65" &&
+              "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65" &&
               routes.indexOf(
                 web3.eth.abi.decodeParameter("address", log.topics[1])
               ) != -1
@@ -3182,7 +3195,7 @@ export class swapBot {
           let cost = Number(
             (
               (outAmount / 10 ** 18) *
-                Number(this.sdks.get(contract.chain_id).wethPrice) -
+              Number(this.sdks.get(contract.chain_id).wethPrice) -
               gasUsed
             ).toFixed(2)
           );
@@ -3252,9 +3265,9 @@ export class swapBot {
         } else {
           let gasUsed = transaction.hash
             ? ((transaction.transactionReceipt.gasUsed *
-                transaction.transactionReceipt.effectiveGasPrice) /
-                10 ** 18) *
-              Number(this.sdks.get(contract.chain_id).wethPrice)
+              transaction.transactionReceipt.effectiveGasPrice) /
+              10 ** 18) *
+            Number(this.sdks.get(contract.chain_id).wethPrice)
             : 0;
           let cost = gasUsed;
           let transactionLog: any = {
@@ -3428,9 +3441,9 @@ export class swapBot {
           transaction.transactionReceipt.logs.forEach((log) => {
             if (
               web3.utils.toChecksumAddress(log.address) ==
-                Config[contract.chain_id].stableContract[0] &&
+              Config[contract.chain_id].stableContract[0] &&
               log.topics[0] ==
-                "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65" &&
+              "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65" &&
               routes.indexOf(
                 web3.eth.abi.decodeParameter("address", log.topics[1])
               ) != -1
@@ -3448,7 +3461,7 @@ export class swapBot {
           let cost = Number(
             (
               (outAmount / 10 ** 18) *
-                Number(this.sdks.get(contract.chain_id).wethPrice) -
+              Number(this.sdks.get(contract.chain_id).wethPrice) -
               gasUsed
             ).toFixed(2)
           );
@@ -3519,9 +3532,9 @@ export class swapBot {
         } else {
           let gasUsed = transaction.hash
             ? ((transaction.transactionReceipt.gasUsed *
-                transaction.transactionReceipt.effectiveGasPrice) /
-                10 ** 18) *
-              Number(this.sdks.get(contract.chain_id).wethPrice)
+              transaction.transactionReceipt.effectiveGasPrice) /
+              10 ** 18) *
+            Number(this.sdks.get(contract.chain_id).wethPrice)
             : 0;
           let cost = gasUsed;
           let transactionLog: any = {
@@ -3725,7 +3738,7 @@ export class swapBot {
               );
               if (
                 log.topics[0] ==
-                  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
+                "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
                 inAddress == receiveAddress
               ) {
                 outAmount += Number(
@@ -3786,13 +3799,13 @@ export class swapBot {
         } else {
           let gasUsed = transaction.hash
             ? Number(
-                (
-                  ((transaction.transactionReceipt.gasUsed *
-                    transaction.transactionReceipt.effectiveGasPrice) /
-                    10 ** 18) *
-                  this.sdks.get(chainId).wethPrice
-                ).toFixed(2)
-              )
+              (
+                ((transaction.transactionReceipt.gasUsed *
+                  transaction.transactionReceipt.effectiveGasPrice) /
+                  10 ** 18) *
+                this.sdks.get(chainId).wethPrice
+              ).toFixed(2)
+            )
             : 0;
           let cost = gasUsed;
           let transactionLog: any = {
@@ -3945,7 +3958,7 @@ export class swapBot {
               );
               if (
                 log.topics[0] ==
-                  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
+                "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" &&
                 inAddress == receiveAddress
               ) {
                 outAmount += Number(
@@ -4006,13 +4019,13 @@ export class swapBot {
         } else {
           let gasUsed = transaction.hash
             ? Number(
-                (
-                  ((transaction.transactionReceipt.gasUsed *
-                    transaction.transactionReceipt.effectiveGasPrice) /
-                    10 ** 18) *
-                  this.sdks.get(chainId).wethPrice
-                ).toFixed(2)
-              )
+              (
+                ((transaction.transactionReceipt.gasUsed *
+                  transaction.transactionReceipt.effectiveGasPrice) /
+                  10 ** 18) *
+                this.sdks.get(chainId).wethPrice
+              ).toFixed(2)
+            )
             : 0;
           let cost = gasUsed;
           let transactionLog: any = {

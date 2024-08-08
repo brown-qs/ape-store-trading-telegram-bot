@@ -8,6 +8,7 @@ dandao.db
 chrome
 *.log
 .VSCodeCounter
+config.json
 # local env files
 .env.local
 .env.*.local

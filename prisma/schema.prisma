@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -217,5 +218,12 @@ model watchlog {
   left_amount     String? @db.VarChar(255)
   cost            String? @db.VarChar(255)
   type            Int?    @default(0) @db.TinyInt
+  create_time     Int?    @default(0)
+}
+
+model whitelist {
+  id              Int     @id @default(autoincrement())
+  telegram_id     String  @db.VarChar(255)
+  telegram_name   String  @db.VarChar(255)
   create_time     Int?    @default(0)
 }

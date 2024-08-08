@@ -285,7 +285,7 @@ export interface baseData {
 
 export interface initParams {
   chainIds: number[];
-  adminName: string;
+  admins: string[];
   token: string;
   dbData: dbData;
 }
