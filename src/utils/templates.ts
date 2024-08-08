@@ -2737,15 +2737,15 @@ export const homeKeyboard = [
   [
     {
       text: "🧮 Buy Modes",
-      callback_data: "rush",
+      callback_data: "buy_modes",
     },
     {
       text: "💰 Assets",
-      callback_data: "rush",
+      callback_data: "assets",
     },
     {
       text: "🔍 CopyTrading",
-      callback_data: "smart_money",
+      callback_data: "copytrading",
     },
   ],
   [
@@ -2755,7 +2755,7 @@ export const homeKeyboard = [
     },
     {
       text: "⚙ Settings",
-      callback_data: "set_prc",
+      callback_data: "settings",
     },
   ],
 ];
