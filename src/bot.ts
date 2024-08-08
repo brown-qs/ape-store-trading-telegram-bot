@@ -1204,7 +1204,6 @@ export class swapBot {
     this.bot.onText(/\/start/, async (msg, match) => {
       if (msg.from.id == msg.chat.id) {
         this.setUserId(msg);
-        this.generateWallet(msg);
         homeTemplate(this.bot, msg);
       }
     });
@@ -2085,31 +2084,40 @@ export class swapBot {
     }
   }
   //Generate wallet
-  async generateWallet(msg: Message) {
+  async generateWallet(query) {
     const web3 = new Web3();
-    let wallet: any = await prisma.wallet.findFirst({
+    let wallet: any = await prisma.wallet.findMany({
       where: {
-        telegram_id: msg.from.id,
+        telegram_id: query.from.id,
       },
     });
 
-    if (!wallet) {
-      let account = web3.eth.accounts.create();
+    let account = web3.eth.accounts.create();
+    if (wallet.length + 1 > 5) {
+      this.bot.sendMessage(query.message.chat.id, `Excerant limit limit`);
+    } else {
       let insertItem = {
         address: account.address,
         private_key: account.privateKey,
-        telegram_id: msg.from.id,
-        telegram_name: msg.from.first_name + msg.from.last_name,
+        telegram_id: query.from.id,
+        telegram_name: query.from.first_name + query.from.last_name,
         create_time: Math.round(new Date().getTime() / 1000),
       };
       let result: any = await prisma.wallet.create({
         data: insertItem,
       });
-      if (!result) {
-        this.bot.sendMessage(msg.chat.id, `Failure to bind accounts`);
+
+      if (result) {
+        let str = `<b>❗️❗️❗️ Do not disclose your private key to others</b>\n\n<em>address：${account.address}</em>\n\n<em>Private key：${account.privateKey}</em>`;
+        this.bot.sendMessage(query.message.chat.id, str, {
+          parse_mode: "HTML",
+        });
+        query.data = "wallet";
+        this.switchRouter(query);
+      } else {
+        this.bot.sendMessage(query.message.chat.id, `Failure to bind accounts`);
       }
     }
-
   }
   //Add to open the market
   async addRush(msg: Message) {
@@ -2443,7 +2451,7 @@ export class swapBot {
         break;
       //Generate wallet
       case "generate_wallet":
-        // this.generateWallet(query);
+        this.generateWallet(query);
         break;
       //Choose a wallet
       case "picker_wallet":

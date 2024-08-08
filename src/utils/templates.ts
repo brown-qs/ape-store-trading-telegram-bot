@@ -1717,7 +1717,7 @@ export const homeTemplate = (bot: any, msg: any) => {
     bot
       .sendMessage(
         msg.chat.id,
-        `<b>\n\n🎉🎉🎉 Welcome! 🎉🎉🎉\n\n</b>`,
+        `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`,
         {
           parse_mode: "HTML",
           reply_markup: {
@@ -1764,7 +1764,7 @@ export const networkTemplate = (bot: any, msg: any, chainIds: number[]) => {
 };
 export const addWalletTemplate = (bot: any, msg: any) => {
   let str =
-    "❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Please lose the way you choose to bind a wallet</b>";
+    "❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Please lose the way you choose to bind a wallet</b>";
   bot.editMessageText(str, {
     chat_id: msg.message.chat.id,
     message_id: msg.message.message_id,
@@ -1782,13 +1782,13 @@ export const walletTemplate = async (bot: any, msg: any) => {
   });
   let str = ``;
   if (wallets.length) {
-    str += `❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Total binding（${wallets.length}）Wallet</b>\n\n`;
+    str += `❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Total binding（${wallets.length}）Wallet</b>\n\n`;
     wallets.forEach((item, index) => {
       str += `<b>(${index + 1}) ${item.address}</b>\n`;
     });
   } else {
     str =
-      "❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Not yet binded wallet，Click the new button below to add a wallet</b>\n\n";
+      "❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Not yet binded wallet，Click the new button below to add a wallet</b>\n\n";
   }
   bot.editMessageText(str, {
     chat_id: msg.message.chat.id,
@@ -2706,34 +2706,6 @@ export const walletKeyboard = [
   [...defaultKeyboard],
 ];
 export const homeKeyboard = [
-  // [
-  //   {
-  //     text: "💳 wallet",
-  //     callback_data: "wallet",
-  //   },
-  // ],
-  // [
-  //   {
-  //     text: "🔭 Monitoring address",
-  //     callback_data: "watch",
-  //   },
-  // ],
-  // [
-  //   {
-  //     text: "💰 Grabbing",
-  //     callback_data: "rush",
-  //   },
-  //   {
-  //     text: "🔍 Smart money search",
-  //     callback_data: "smart_money",
-  //   },
-  // ],
-  // [
-  //   {
-  //     text: "🌎 Node settings",
-  //     callback_data: "set_prc",
-  //   },
-  // ],
   [
     {
       text: "🧮 Buy Modes",
