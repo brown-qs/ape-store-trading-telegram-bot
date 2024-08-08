@@ -1730,8 +1730,26 @@ export const homeTemplate = (bot: any, msg: any) => {
       });
   });
 };
+export const buyModesTemplate = (bot: any, msg: any) => {
+  return new Promise<number>(async (resolve) => {
+    bot
+      .sendMessage(
+        msg.chat.id,
+        `<b></b>\n\n\n\n<b>☑ Select buy mode. </b>\n\n\n\n<b></b>`,
+        {
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: buyModesKeyboard,
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.message_id);
+      });
+  });
+};
 export const goBackHomeTemplate = (bot: any, msg: any) => {
-  let str = `<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n\n<b>welcomedandaobot</b>\n\n<b>BookbotDoes not constitute investment advice，Please bear the risks</b>\n\n<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n`;
+  let str = `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`;
   bot.editMessageText(str, {
     chat_id: msg.chat.id,
     message_id: msg.message_id,
@@ -2728,6 +2746,22 @@ export const homeKeyboard = [
     {
       text: "⚙ Settings",
       callback_data: "settings",
+    },
+  ],
+];
+export const buyModesKeyboard = [
+  [
+    {
+      text: "🚗 Classic Buy",
+      callback_data: "classic_buy",
+    },
+    {
+      text: "🏍 Auto Buy",
+      callback_data: "auto_buy",
+    },
+    {
+      text: "🚌 Bundle Buy",
+      callback_data: "bundle_buy",
     },
   ],
 ];
