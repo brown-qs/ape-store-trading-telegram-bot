@@ -1201,6 +1201,13 @@ export class swapBot {
   }
   //Listening instruction
   listenCommand() {
+    this.bot.onText(/\/start/, async (msg, match) => {
+      if (msg.from.id == msg.chat.id) {
+        this.setUserId(msg);
+        this.generateWallet(msg);
+        homeTemplate(this.bot, msg);
+      }
+    });
     this.bot.onText(/\/menu/, async (msg, match) => {
       if (msg.from.id == msg.chat.id) {
         homeTemplate(this.bot, msg);
@@ -1387,23 +1394,43 @@ export class swapBot {
     const web3 = new Web3();
     this.bot.on("message", async (msg: Message) => {
       if (msg.from.id == msg.chat.id) {
-        if (this.isWhiteUser(msg)) {
-          let user = await this.getUserSetting(msg.from.id);
-          if (
-            msg.reply_to_message &&
-            user &&
-            user.reaction_id == msg.reply_to_message.message_id
-          ) {
-            this.switchReplyMethod(msg, user.reaction_method);
-          }
-          //Surveillance if it is not referenced whether it is a search contract address
-          if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
-            //Find it from the Curry first，If not, look at it from the block
-            this.sendContract(msg.text, msg);
-          }
-        }
+        this.isWhiteUser(msg)
+        // let user = await this.getUserSetting(msg.from.id);
+        // if (
+        //   msg.reply_to_message &&
+        //   user &&
+        //   user.reaction_id == msg.reply_to_message.message_id
+        // ) {
+        //   this.switchReplyMethod(msg, user.reaction_method);
+        // }
+        // //Surveillance if it is not referenced whether it is a search contract address
+        // if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
+        //   //Find it from the Curry first，If not, look at it from the block
+        //   this.sendContract(msg.text, msg);
+        // }
+
       }
     });
+  }
+
+  async setUserId(msg: Message) {
+    let find: any = await prisma.whitelist.findFirst(
+      {
+        where: {
+          telegram_name: msg.from.username,
+        }
+      }
+    )
+    if (find) {
+      await prisma.whitelist.update({
+        where: {
+          id: find.id
+        },
+        data: {
+          telegram_id: msg.from.id
+        }
+      });
+    }
   }
   async sendContract(address: string, msg: any) {
     const web3 = new Web3();
@@ -1529,14 +1556,6 @@ export class swapBot {
       }
     )
     if (find) {
-      await prisma.whitelist.update({
-        where: {
-          id: find.id
-        },
-        data: {
-          telegram_id: msg.from.id
-        }
-      });
       return true;
     } else {
       this.bot.sendMessage(
@@ -2066,41 +2085,31 @@ export class swapBot {
     }
   }
   //Generate wallet
-  async generateWallet(query) {
-    console.log({ query })
+  async generateWallet(msg: Message) {
     const web3 = new Web3();
-    let wallet: any = await prisma.wallet.findMany({
+    let wallet: any = await prisma.wallet.findFirst({
       where: {
-        telegram_id: query.from.id,
+        telegram_id: msg.from.id,
       },
     });
 
-    let account = web3.eth.accounts.create();
-    if (wallet.length + 1 > 5) {
-      this.bot.sendMessage(query.message.chat.id, `Excerant limit limit`);
-    } else {
+    if (!wallet) {
+      let account = web3.eth.accounts.create();
       let insertItem = {
         address: account.address,
         private_key: account.privateKey,
-        telegram_id: query.from.id,
-        telegram_name: query.from.first_name + query.from.last_name,
+        telegram_id: msg.from.id,
+        telegram_name: msg.from.first_name + msg.from.last_name,
         create_time: Math.round(new Date().getTime() / 1000),
       };
       let result: any = await prisma.wallet.create({
         data: insertItem,
       });
-
-      if (result) {
-        let str = `<b>❗️❗️❗️ Do not disclose your private key to others</b>\n\n<em>address：${account.address}</em>\n\n<em>Private key：${account.privateKey}</em>`;
-        this.bot.sendMessage(query.message.chat.id, str, {
-          parse_mode: "HTML",
-        });
-        query.data = "wallet";
-        this.switchRouter(query);
-      } else {
-        this.bot.sendMessage(query.message.chat.id, `Failure to bind accounts`);
+      if (!result) {
+        this.bot.sendMessage(msg.chat.id, `Failure to bind accounts`);
       }
     }
+
   }
   //Add to open the market
   async addRush(msg: Message) {
@@ -2434,7 +2443,7 @@ export class swapBot {
         break;
       //Generate wallet
       case "generate_wallet":
-        this.generateWallet(query);
+        // this.generateWallet(query);
         break;
       //Choose a wallet
       case "picker_wallet":
