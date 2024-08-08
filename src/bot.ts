@@ -1230,8 +1230,11 @@ export class swapBot {
     });
     this.bot.onText(/\/whitelist (\w+)/, async (msg, match) => {
       if (this.isAdmin(msg.from.username)) {
-        console.log({ msg, match })
-        // await prisma
+        await prisma.whitelist.create({
+          data: {
+            telegram_name: match[1],
+          }
+        })
         this.bot.sendMessage(msg.chat.id, `Whitelist success`);
       } else {
         this.bot.sendMessage(
@@ -1384,18 +1387,20 @@ export class swapBot {
     const web3 = new Web3();
     this.bot.on("message", async (msg: Message) => {
       if (msg.from.id == msg.chat.id) {
-        let user = await this.getUserSetting(msg.from.id);
-        if (
-          msg.reply_to_message &&
-          user &&
-          user.reaction_id == msg.reply_to_message.message_id
-        ) {
-          this.switchReplyMethod(msg, user.reaction_method);
-        }
-        //Surveillance if it is not referenced whether it is a search contract address
-        if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
-          //Find it from the Curry first，If not, look at it from the block
-          this.sendContract(msg.text, msg);
+        if (this.isWhiteUser(msg)) {
+          let user = await this.getUserSetting(msg.from.id);
+          if (
+            msg.reply_to_message &&
+            user &&
+            user.reaction_id == msg.reply_to_message.message_id
+          ) {
+            this.switchReplyMethod(msg, user.reaction_method);
+          }
+          //Surveillance if it is not referenced whether it is a search contract address
+          if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
+            //Find it from the Curry first，If not, look at it from the block
+            this.sendContract(msg.text, msg);
+          }
         }
       }
     });
@@ -1509,6 +1514,37 @@ export class swapBot {
       }
     }
     return find ? find : insert;
+  }
+
+  async isWhiteUser(msg: any) {
+    if (this.isAdmin(msg.from.username)) {
+      return true;
+    }
+
+    let find: any = await prisma.whitelist.findFirst(
+      {
+        where: {
+          telegram_name: msg.from.username,
+        }
+      }
+    )
+    if (find) {
+      await prisma.whitelist.update({
+        where: {
+          id: find.id
+        },
+        data: {
+          telegram_id: msg.from.id
+        }
+      });
+      return true;
+    } else {
+      this.bot.sendMessage(
+        msg.chat.id,
+        `You don't have permission to use this bot.`
+      );
+      return false;
+    }
   }
   //monitorbotButton
   botQuery() {
@@ -2031,6 +2067,7 @@ export class swapBot {
   }
   //Generate wallet
   async generateWallet(query) {
+    console.log({ query })
     const web3 = new Web3();
     let wallet: any = await prisma.wallet.findMany({
       where: {

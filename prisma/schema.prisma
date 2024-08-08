@@ -218,12 +218,12 @@ model watchlog {
   left_amount     String? @db.VarChar(255)
   cost            String? @db.VarChar(255)
   type            Int?    @default(0) @db.TinyInt
-  create_time     Int?    @default(0)
+  create_time     DateTime? @default(now())
 }
 
 model whitelist {
   id              Int     @id @default(autoincrement())
-  telegram_id     String  @db.VarChar(255)
+  telegram_id     BigInt?    @default(0)
   telegram_name   String  @db.VarChar(255)
-  create_time     Int?    @default(0)
+  create_time     DateTime? @default(now())
 }
