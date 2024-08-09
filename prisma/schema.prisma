@@ -83,6 +83,9 @@ model setting {
   id                  Int      @id @default(autoincrement())
   telegram_id         BigInt?
   chain_id            Int?     @default(0)
+  trading_mode        String?  @default("classic") @db.VarChar(20)
+  classic_mode        String?  @default("quick") @db.VarChar(20)
+  quick_buy_amount    Decimal? @default(0.00000) @db.Decimal(10, 5)
   manual_gas_fee      Int?     @default(0)
   follow_gas_fee      Int?     @default(0)
   rush_gas_fee        Int?     @default(0)

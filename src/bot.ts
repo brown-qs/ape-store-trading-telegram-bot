@@ -2281,6 +2281,8 @@ export class swapBot {
     user.reaction_method = "";
     user.set_type = 0;
     user.log_id = 0;
+    user.classic_mode = "quick";
+    user.quick_buy_amount = msg.text;
     this.updateUserSetting(user);
     this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Quick Buy amount successfully.`);
   }

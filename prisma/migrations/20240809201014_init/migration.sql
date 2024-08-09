@@ -5,6 +5,11 @@
 
 */
 -- AlterTable
+ALTER TABLE `setting` ADD COLUMN `classic_mode` VARCHAR(20) NULL DEFAULT 'quick',
+    ADD COLUMN `quick_buy_amount` DECIMAL(10, 5) NULL DEFAULT 0.00000,
+    ADD COLUMN `trading_mode` VARCHAR(20) NULL DEFAULT 'classic';
+
+-- AlterTable
 ALTER TABLE `watchlog` DROP COLUMN `create_time`,
     ADD COLUMN `create_time` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3);
 
