@@ -1755,15 +1755,21 @@ export const buyModesTemplate = (bot: any, msg: any) => {
   });
 };
 export const settingTemplate = (bot: any, msg: any) => {
-  let str = `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`;
-  bot.editMessageText(str, {
-    chat_id: msg.chat.id,
-    message_id: msg.message_id,
-    parse_mode: "HTML",
-    reply_to_message_id: msg.message_id,
-    reply_markup: {
-      inline_keyboard: settingsKeyboard,
-    },
+  return new Promise<number>(async (resolve) => {
+    bot
+      .sendMessage(
+        msg.chat.id,
+        `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`,
+        {
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: settingsKeyboard,
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.message_id);
+      });
   });
 };
 export const classicBuySettingTemplate = (bot: any, msg: any) => {
