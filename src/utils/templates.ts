@@ -2864,8 +2864,12 @@ export const classicBuySettingKeyboard = [
   ],
   [
     {
-      text: "🕵️‍♂️ Dev Sell Setting",
-      callback_data: "dev_sell_setting",
+      text: "🕵️‍♂️ Dev Sell Setting On",
+      callback_data: "dev_sell_on",
+    },
+    {
+      text: "🕵️‍♀️ Dev Sell Setting Off",
+      callback_data: "dev_sell_off",
     },
   ],
   backToSettingKeyboard

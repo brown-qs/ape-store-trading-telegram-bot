@@ -1599,6 +1599,9 @@ export class swapBot {
       case "set_percent_profit":
         this.percentTakeProfitSetting(msg);
         break;
+      case "dev_sell_on":
+        this.setDevSell(msg, 1);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -2327,6 +2330,28 @@ export class swapBot {
     this.bot.sendMessage(msg.chat.id, `Set ${msg.text}% to take profit mode successfully.`);
   }
 
+  // percent take profit setting
+  async setDevSell(msg: Message, mode: number) {
+    if (mode) {
+      let user = await this.getUserSetting(msg.from.id);
+      this.bot.deleteMessage(msg.chat.id, msg.message_id);
+      this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+      let query = user.query;
+      query.data = "settings";
+      this.switchRouter(query);
+      user.query = "";
+      user.reaction_id = 0;
+      user.reaction_method = "";
+      user.set_type = 0;
+      user.log_id = 0;
+      this.updateUserSetting(user);
+      this.bot.sendMessage(msg.chat.id, `Turn on Dev sell mode successfully.`);
+    } else {
+      settingTemplate(this.bot, msg);
+      this.bot.sendMessage(msg.chat.id, `Turn off Dev sell mode successfully.`);
+    }
+  }
+
   // marketcap take profit setting
   async setMarketcapProfit(msg: Message) {
     settingTemplate(this.bot, msg);
@@ -2684,6 +2709,28 @@ export class swapBot {
             user.query = query;
             this.updateUserSetting(user);
           });
+        break;
+      case "dev_sell_on":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input dev threshold.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "dev_sell_on";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "dev_sell_off":
+        this.setDevSell(query.message, 0);
         break;
       case "set_marketcap_profit":
         this.setMarketcapProfit(query.message);
