@@ -41,6 +41,7 @@ import {
   homeTemplate,
   buyModesTemplate,
   settingTemplate,
+  classicBuySettingTemplate,
   walletTemplate,
   addWalletTemplate,
   goBackHomeTemplate,
@@ -2472,6 +2473,9 @@ export class swapBot {
         break;
       case "settings":
         settingTemplate(this.bot, query.message);
+        break;
+      case "classic_buy_setting":
+        classicBuySettingTemplate(this.bot, query.message);
         break;
       case "rush":
         rushTemplate(this.bot, query.message);

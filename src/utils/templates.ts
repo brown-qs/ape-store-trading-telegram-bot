@@ -58,6 +58,12 @@ export const defaultKeyboard = [
     callback_data: "go_home",
   },
 ];
+export const backToSettingKeyboard = [
+  {
+    text: "↪️ Back to setting",
+    callback_data: "settings",
+  },
+];
 export const chainEnum = {
   1: "Ethereum",
   42161: "Arbitrum",
@@ -1760,6 +1766,18 @@ export const settingTemplate = (bot: any, msg: any) => {
     },
   });
 };
+export const classicBuySettingTemplate = (bot: any, msg: any) => {
+  let str = `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`;
+  bot.editMessageText(str, {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+    parse_mode: "HTML",
+    reply_to_message_id: msg.message_id,
+    reply_markup: {
+      inline_keyboard: classicBuySettingKeyboard,
+    },
+  });
+};
 export const goBackHomeTemplate = (bot: any, msg: any) => {
   let str = `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`;
   bot.editMessageText(str, {
@@ -2810,4 +2828,33 @@ export const settingsKeyboard = [
     },
   ],
   defaultKeyboard
+];
+export const classicBuySettingKeyboard = [
+  [
+    {
+      text: "🎡 Quick Buy",
+      callback_data: "quick_buy_setting",  // classic_buy
+    },
+    {
+      text: "🎨 Ramp Buy",
+      callback_data: "ramp_buy_setting",
+    },
+  ],
+  [
+    {
+      text: "💠 % Take Profit",
+      callback_data: "percent_take_profit_setting",
+    },
+    {
+      text: "🌐 Marketcap Type Profit",
+      callback_data: "marketcap_type_profit_setting",
+    },
+  ],
+  [
+    {
+      text: "🕵️‍♂️ Dev Sell Setting",
+      callback_data: "dev_sell_setting",
+    },
+  ],
+  backToSettingKeyboard
 ];
