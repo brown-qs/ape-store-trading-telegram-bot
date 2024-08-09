@@ -1580,6 +1580,9 @@ export class swapBot {
       case "classic_buy":
         console.log(msg);
         break;
+      case "quick_buy_setting":
+        this.quickBuySetting(msg);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -2242,6 +2245,24 @@ export class swapBot {
       }
     }
   }
+
+  // quick buy setting
+  async quickBuySetting(msg: Message) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Quick Buy amount successfully.`);
+  }
+
   //Add wallet
   async addWallet(msg: Message) {
     let privateKey = msg.text;
@@ -2476,6 +2497,25 @@ export class swapBot {
         break;
       case "classic_buy_setting":
         classicBuySettingTemplate(this.bot, query.message);
+        break;
+      case "quick_buy_setting":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input amount to quick buy.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "quick_buy_setting";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
         break;
       case "rush":
         rushTemplate(this.bot, query.message);
