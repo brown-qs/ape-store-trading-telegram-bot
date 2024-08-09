@@ -1748,6 +1748,18 @@ export const buyModesTemplate = (bot: any, msg: any) => {
       });
   });
 };
+export const settingTemplate = (bot: any, msg: any) => {
+  let str = `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`;
+  bot.editMessageText(str, {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+    parse_mode: "HTML",
+    reply_to_message_id: msg.message_id,
+    reply_markup: {
+      inline_keyboard: settingsKeyboard,
+    },
+  });
+};
 export const goBackHomeTemplate = (bot: any, msg: any) => {
   let str = `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`;
   bot.editMessageText(str, {
@@ -2713,12 +2725,22 @@ export const addWalletKeyboard = [
 export const walletKeyboard = [
   [
     {
-      text: "💳 New wallet",
+      text: "💳 New Wallet",
       callback_data: "add_wallet",
     },
     {
-      text: "❌ Delete wallet",
+      text: "❌ Delete Wallet",
       callback_data: "delete_wallet",
+    },
+  ],
+  [
+    {
+      text: "🗝 Export Private Key",
+      callback_data: "export_wallet",
+    },
+    {
+      text: "👬 Withdraw Wallet",
+      callback_data: "withdraw_wallet",
     },
   ],
   [...defaultKeyboard],
@@ -2753,7 +2775,7 @@ export const buyModesKeyboard = [
   [
     {
       text: "🚗 Classic Buy",
-      callback_data: "classic_buy",
+      callback_data: "add_rush",  // classic_buy
     },
     {
       text: "🏍 Auto Buy",
@@ -2764,4 +2786,28 @@ export const buyModesKeyboard = [
       callback_data: "bundle_buy",
     },
   ],
+  defaultKeyboard
+];
+export const settingsKeyboard = [
+  [
+    {
+      text: "🚗 Classic Buy",
+      callback_data: "classic_buy_setting",  // classic_buy
+    },
+    {
+      text: "🏍 Auto Buy",
+      callback_data: "auto_buy_setting",
+    },
+  ],
+  [
+    {
+      text: "🚌 Bundle Buy",
+      callback_data: "bundle_buy_setting",
+    },
+    {
+      text: "🔍 CopyTrading",
+      callback_data: "copy_trading_setting",
+    },
+  ],
+  defaultKeyboard
 ];

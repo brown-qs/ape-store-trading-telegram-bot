@@ -40,6 +40,7 @@ import DANDAO, {
 import {
   homeTemplate,
   buyModesTemplate,
+  settingTemplate,
   walletTemplate,
   addWalletTemplate,
   goBackHomeTemplate,
@@ -1395,19 +1396,19 @@ export class swapBot {
     this.bot.on("message", async (msg: Message) => {
       if (msg.from.id == msg.chat.id) {
         this.isWhiteUser(msg)
-        // let user = await this.getUserSetting(msg.from.id);
-        // if (
-        //   msg.reply_to_message &&
-        //   user &&
-        //   user.reaction_id == msg.reply_to_message.message_id
-        // ) {
-        //   this.switchReplyMethod(msg, user.reaction_method);
-        // }
-        // //Surveillance if it is not referenced whether it is a search contract address
-        // if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
-        //   //Find it from the Curry first，If not, look at it from the block
-        //   this.sendContract(msg.text, msg);
-        // }
+        let user = await this.getUserSetting(msg.from.id);
+        if (
+          msg.reply_to_message &&
+          user &&
+          user.reaction_id == msg.reply_to_message.message_id
+        ) {
+          this.switchReplyMethod(msg, user.reaction_method);
+        }
+        //Surveillance if it is not referenced whether it is a search contract address
+        if (web3.utils.isAddress(msg.text) && !msg.reply_to_message) {
+          //Find it from the Curry first，If not, look at it from the block
+          this.sendContract(msg.text, msg);
+        }
 
       }
     });
@@ -1575,6 +1576,9 @@ export class swapBot {
   //Surveying instruction
   switchReplyMethod(msg: Message, method: string) {
     switch (method) {
+      case "classic_buy":
+        console.log(msg);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -2026,6 +2030,11 @@ export class swapBot {
     newUser.log_id = 0;
     this.updateUserSetting(newUser);
   }
+
+  // Select Classic Buy
+  async handleClassicBuy(msg: Message) {
+
+  }
   //Delete the binding wallet
   async deleteWallet(msg: Message) {
     let address = msg.text;
@@ -2441,6 +2450,28 @@ export class swapBot {
         break;
       case "buy_modes":
         buyModesTemplate(this.bot, query.message);
+        break;
+      case "classic_buy":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input contract address.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "add_rush";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "settings":
+        settingTemplate(this.bot, query.message);
         break;
       case "rush":
         rushTemplate(this.bot, query.message);
