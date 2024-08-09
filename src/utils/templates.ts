@@ -2855,7 +2855,7 @@ export const classicBuySettingKeyboard = [
   [
     {
       text: "💠 % Take Profit",
-      callback_data: "percent_take_profit_setting",
+      callback_data: "set_take_profit",
     },
     {
       text: "🌐 Marketcap Type Profit",

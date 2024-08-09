@@ -1596,6 +1596,9 @@ export class swapBot {
       case "update_ramp_amount_4":
         this.rampBuySetting(msg, 4);
         break;
+      case "set_take_profit":
+        this.percentTakeProfitSetting(msg);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -2307,6 +2310,23 @@ export class swapBot {
     this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Ramp Buy ${indexString} amount successfully.`);
   }
 
+  // percent take profit setting
+  async percentTakeProfitSetting(msg: Message) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text}% to take profit.`);
+  }
+
   //Add wallet
   async addWallet(msg: Message) {
     let privateKey = msg.text;
@@ -2636,6 +2656,25 @@ export class swapBot {
             let user = await this.getUserSetting(query.from.id);
             user.reaction_id = res.message_id;
             user.reaction_method = "update_ramp_amount_4";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "set_take_profit":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input % take profit.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "set_take_profit";
             user.query = query;
             this.updateUserSetting(user);
           });
