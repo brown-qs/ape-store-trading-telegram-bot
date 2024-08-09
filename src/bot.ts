@@ -42,6 +42,7 @@ import {
   buyModesTemplate,
   settingTemplate,
   classicBuySettingTemplate,
+  classicRampBuySettingTemplate,
   walletTemplate,
   addWalletTemplate,
   goBackHomeTemplate,
@@ -1583,6 +1584,18 @@ export class swapBot {
       case "quick_buy_setting":
         this.quickBuySetting(msg);
         break;
+      case "update_ramp_amount_1":
+        this.rampBuySetting(msg, 1);
+        break;
+      case "update_ramp_amount_2":
+        this.rampBuySetting(msg, 2);
+        break;
+      case "update_ramp_amount_3":
+        this.rampBuySetting(msg, 3);
+        break;
+      case "update_ramp_amount_4":
+        this.rampBuySetting(msg, 4);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -2263,6 +2276,37 @@ export class swapBot {
     this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Quick Buy amount successfully.`);
   }
 
+  // ramp buy setting
+  async rampBuySetting(msg: Message, index: number) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    let indexString = '';
+    switch (index) {
+      case 1:
+        indexString = '1st';
+        break;
+      case 2:
+        indexString = '2nd';
+        break;
+      case 3:
+        indexString = '3rd';
+        break;
+      default:
+        indexString = `${index}th`;
+    }
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Ramp Buy ${indexString} amount successfully.`);
+  }
+
   //Add wallet
   async addWallet(msg: Message) {
     let privateKey = msg.text;
@@ -2513,6 +2557,85 @@ export class swapBot {
             let user = await this.getUserSetting(query.from.id);
             user.reaction_id = res.message_id;
             user.reaction_method = "quick_buy_setting";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "ramp_buy_setting":
+        classicRampBuySettingTemplate(this.bot, query.message);
+        break;
+      case "update_ramp_amount_1":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 1st Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_1";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_2":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 2nd Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_2";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_3":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 3rd Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_3";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_4":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 4th Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_4";
             user.query = query;
             this.updateUserSetting(user);
           });

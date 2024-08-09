@@ -1778,6 +1778,18 @@ export const classicBuySettingTemplate = (bot: any, msg: any) => {
     },
   });
 };
+export const classicRampBuySettingTemplate = (bot: any, msg: any) => {
+  let str = `<b></b>\n\n<b>Here are your ramp amounts.</b>\n\n<b>1️⃣ 10</b>\n\n<b>2️⃣ 20</b>\n\n<b>3️⃣ 30</b>\n\n<b>4️⃣ 40</b>\n\n\n\n\n\n<b></b>`;
+  bot.editMessageText(str, {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+    parse_mode: "HTML",
+    reply_to_message_id: msg.message_id,
+    reply_markup: {
+      inline_keyboard: classicRampBuySettingKeyboard,
+    },
+  });
+};
 export const goBackHomeTemplate = (bot: any, msg: any) => {
   let str = `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`;
   bot.editMessageText(str, {
@@ -2810,7 +2822,7 @@ export const settingsKeyboard = [
   [
     {
       text: "🚗 Classic Buy",
-      callback_data: "classic_buy_setting",  // classic_buy
+      callback_data: "classic_buy_setting",
     },
     {
       text: "🏍 Auto Buy",
@@ -2833,7 +2845,7 @@ export const classicBuySettingKeyboard = [
   [
     {
       text: "🎡 Quick Buy",
-      callback_data: "quick_buy_setting",  // classic_buy
+      callback_data: "quick_buy_setting",
     },
     {
       text: "🎨 Ramp Buy",
@@ -2856,5 +2868,33 @@ export const classicBuySettingKeyboard = [
       callback_data: "dev_sell_setting",
     },
   ],
+  backToSettingKeyboard
+];
+export const classicRampBuySettingKeyboard = [
+  [
+    {
+      text: "1️⃣ Update amount",
+      callback_data: "update_ramp_amount_1",
+    },
+  ],
+  [
+    {
+      text: "2️⃣ Update amount",
+      callback_data: "update_ramp_amount_2",
+    },
+  ],
+  [
+    {
+      text: "3️⃣ Update amount",
+      callback_data: "update_ramp_amount_3",
+    },
+  ],
+  [
+    {
+      text: "4️⃣ Update amount",
+      callback_data: "update_ramp_amount_4",
+    },
+  ],
+
   backToSettingKeyboard
 ];
