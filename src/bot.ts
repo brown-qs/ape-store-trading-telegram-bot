@@ -1596,7 +1596,7 @@ export class swapBot {
       case "update_ramp_amount_4":
         this.rampBuySetting(msg, 4);
         break;
-      case "set_take_profit":
+      case "set_percent_profit":
         this.percentTakeProfitSetting(msg);
         break;
       //Import wallet
@@ -2324,7 +2324,13 @@ export class swapBot {
     user.set_type = 0;
     user.log_id = 0;
     this.updateUserSetting(user);
-    this.bot.sendMessage(msg.chat.id, `Set ${msg.text}% to take profit.`);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text}% to take profit mode successfully.`);
+  }
+
+  // marketcap take profit setting
+  async setMarketcapProfit(msg: Message) {
+    settingTemplate(this.bot, msg);
+    this.bot.sendMessage(msg.chat.id, `Set Marketcap take profit mode successfully.`);
   }
 
   //Add wallet
@@ -2660,7 +2666,7 @@ export class swapBot {
             this.updateUserSetting(user);
           });
         break;
-      case "set_take_profit":
+      case "set_percent_profit":
         this.bot
           .sendMessage(
             query.message.chat.id,
@@ -2674,10 +2680,13 @@ export class swapBot {
           .then(async (res) => {
             let user = await this.getUserSetting(query.from.id);
             user.reaction_id = res.message_id;
-            user.reaction_method = "set_take_profit";
+            user.reaction_method = "set_percent_profit";
             user.query = query;
             this.updateUserSetting(user);
           });
+        break;
+      case "set_marketcap_profit":
+        this.setMarketcapProfit(query.message);
         break;
       case "rush":
         rushTemplate(this.bot, query.message);

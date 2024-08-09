@@ -2855,11 +2855,11 @@ export const classicBuySettingKeyboard = [
   [
     {
       text: "💠 % Take Profit",
-      callback_data: "set_take_profit",
+      callback_data: "set_percent_profit",
     },
     {
       text: "🌐 Marketcap Type Profit",
-      callback_data: "marketcap_type_profit_setting",
+      callback_data: "set_marketcap_profit",
     },
   ],
   [
