@@ -1736,12 +1736,18 @@ export const homeTemplate = (bot: any, msg: any) => {
       });
   });
 };
-export const buyModesTemplate = (bot: any, msg: any) => {
+export const buyModesTemplate = async (bot: any, msg: any) => {
+  let setting: any = await prisma.setting.findFirst({
+    where: {
+      telegram_id: msg.from.id,
+    },
+  });
+
   return new Promise<number>(async (resolve) => {
     bot
       .sendMessage(
         msg.chat.id,
-        `<b></b>\n\n\n\n<b>☑ Select buy mode. </b>\n\n\n\n<b></b>`,
+        `<b></b>\n\n\n\n<b>☑ Select buy mode. </b>\n\n<b>You are on ${setting.trading_mode} mode now.</b>\n\n\n\n<b></b>`,
         {
           parse_mode: "HTML",
           reply_markup: {
