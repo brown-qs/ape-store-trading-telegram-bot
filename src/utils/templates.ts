@@ -58,6 +58,12 @@ export const defaultKeyboard = [
     callback_data: "go_home",
   },
 ];
+export const backToSettingKeyboard = [
+  {
+    text: "↪️ Back to setting",
+    callback_data: "settings",
+  },
+];
 export const chainEnum = {
   1: "Ethereum",
   42161: "Arbitrum",
@@ -128,12 +134,12 @@ export const editorBuySuccessTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -177,19 +183,16 @@ export const editorBuySuccessTemplate = async (
     Number((Number(log.price) * wethPrice).toFixed(15))
   ).toFixed();
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Buy：${log.in_amount} ETH</b>\n` +
     `<b>💵 income：${log.out_amount} ${log.symbol}</b>\n` +
@@ -291,12 +294,12 @@ export const editorSellSuccessTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -340,19 +343,16 @@ export const editorSellSuccessTemplate = async (
     Number((Number(log.price) * wethPrice).toFixed(15))
   ).toFixed();
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Sell：${log.in_amount} ${log.symbol}</b>\n` +
     `<b>💵 income：${log.out_amount} ETH</b>\n` +
@@ -455,12 +455,12 @@ export const sellSuccessTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -504,19 +504,16 @@ export const sellSuccessTemplate = async (
     Number((Number(log.price) * wethPrice).toFixed(15))
   ).toFixed();
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Sell：${log.in_amount} ${log.symbol}</b>\n` +
     `<b>💵 income：${log.out_amount} ETH</b>\n` +
@@ -617,12 +614,12 @@ export const buySuccessTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -666,19 +663,16 @@ export const buySuccessTemplate = async (
     Number((Number(log.price) * wethPrice).toFixed(15))
   ).toFixed();
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Buy：${log.in_amount} ETH</b>\n` +
     `<b>💵 income：${log.out_amount} ${log.symbol}</b>\n` +
@@ -757,25 +751,21 @@ export const pendingTamplate = async (
   if (type == 1) {
     amountIn = `<b>💵 Buy：${BigNumber(amount).toFixed()} ETH</b>\n`;
   } else if (type == 2) {
-    amountIn = `<b>💵 Sell：${BigNumber(amount).toFixed()} ${
-      contract.symbol
-    }</b>\n`;
+    amountIn = `<b>💵 Sell：${BigNumber(amount).toFixed()} ${contract.symbol
+      }</b>\n`;
   } else if (type == 3) {
     amountIn = `<b>💵 Follow a single buy：${BigNumber(
       amount
     ).toFixed()} ETH</b>\n`;
   } else if (type == 4) {
-    amountIn = `<b>💵 Selling：${BigNumber(amount).toFixed()} ${
-      contract.symbol
-    }</b>\n`;
+    amountIn = `<b>💵 Selling：${BigNumber(amount).toFixed()} ${contract.symbol
+      }</b>\n`;
   } else if (type == 5) {
-    amountIn = `<b>💵 Grabbing：${BigNumber(amount).toFixed()} ${
-      contract.symbol
-    }</b>\n`;
+    amountIn = `<b>💵 Grabbing：${BigNumber(amount).toFixed()} ${contract.symbol
+      }</b>\n`;
   }
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     amountIn +
     `<b>🚨 type：${getTypeName(type)}</b>\n` +
@@ -805,21 +795,18 @@ export const errorTamplate = async (
   if (type == 1) {
     amountIn = `<b>💵 Buy：${BigNumber(amount).toFixed()} ETH</b>\n`;
   } else if (type == 2) {
-    amountIn = `<b>💵 Sell：${BigNumber(amount).toFixed()} ${
-      contract.symbol
-    }</b>\n`;
+    amountIn = `<b>💵 Sell：${BigNumber(amount).toFixed()} ${contract.symbol
+      }</b>\n`;
   } else if (type == 3) {
     amountIn = `<b>💵 Follow a single buy：${BigNumber(
       amount
     ).toFixed()} ETH</b>\n`;
   } else if (type == 4) {
-    amountIn = `<b>💵 Selling：${BigNumber(amount).toFixed()} ${
-      contract.symbol
-    }</b>\n`;
+    amountIn = `<b>💵 Selling：${BigNumber(amount).toFixed()} ${contract.symbol
+      }</b>\n`;
   }
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     amountIn +
     `<b>🚨 type：${getTypeName(type)}</b>\n` +
@@ -866,12 +853,12 @@ export const editorContractTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -912,19 +899,16 @@ export const editorContractTemplate = async (
   let dex = getDexTool(contract.address, contract.chain_id);
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>⛽ GasPrice: ${currentGasPrice} Gwei</b>\n` +
     `<b>💵 price: $ ${price}</b>\n` +
@@ -941,10 +925,9 @@ export const editorContractTemplate = async (
       Number((total * Number(price)).toFixed(3))
     )}</b>\n\n` +
     `<b>📌 default address:</b>\n` +
-    `<b>${
-      user.default_address
-        ? user.default_address
-        : "There is no setting address"
+    `<b>${user.default_address
+      ? user.default_address
+      : "There is no setting address"
     }</b>\n` +
     `<b>🎉 Account${contract.symbol}: ${userCoinBalance} ${contract.symbol}</b>\n` +
     `<b>💰 value: ${exchangeValue} ETH</b>\n` +
@@ -952,14 +935,13 @@ export const editorContractTemplate = async (
   const contractKeyboard = [
     [
       {
-        text: `💳 (${
-          user.default_address
-            ? user.default_address.substring(
-                user.default_address.length - 15,
-                user.default_address.length
-              )
-            : "Click to select wallet"
-        })`,
+        text: `💳 (${user.default_address
+          ? user.default_address.substring(
+            user.default_address.length - 15,
+            user.default_address.length
+          )
+          : "Click to select wallet"
+          })`,
         callback_data: "picker_wallet",
       },
     ],
@@ -1206,8 +1188,7 @@ export const createContractTemplate = async (
     );
   }
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
@@ -1288,12 +1269,12 @@ export const editorRushDetailTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -1330,19 +1311,16 @@ export const editorRushDetailTemplate = async (
   }
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>⛽ GasPrice: ${currentGasPrice} Gwei</b>\n` +
     `<b>💵 price: $ ${price}</b>\n` +
@@ -1367,14 +1345,13 @@ export const editorRushDetailTemplate = async (
   const contractKeyboard = [
     [
       {
-        text: `💳 (${
-          task.address
-            ? task.address.substring(
-                task.address.length - 15,
-                task.address.length
-              )
-            : "Click to select wallet"
-        })`,
+        text: `💳 (${task.address
+          ? task.address.substring(
+            task.address.length - 15,
+            task.address.length
+          )
+          : "Click to select wallet"
+          })`,
         callback_data: `/picker_task_wallet ${task.id}`,
       },
     ],
@@ -1450,12 +1427,12 @@ export const rushDetailTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -1492,19 +1469,16 @@ export const rushDetailTemplate = async (
   }
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>⛽ GasPrice: ${currentGasPrice} Gwei</b>\n` +
     `<b>💵 price: $ ${price}</b>\n` +
@@ -1529,14 +1503,13 @@ export const rushDetailTemplate = async (
   const contractKeyboard = [
     [
       {
-        text: `💳 (${
-          task.address
-            ? task.address.substring(
-                task.address.length - 15,
-                task.address.length
-              )
-            : "Click to select wallet"
-        })`,
+        text: `💳 (${task.address
+          ? task.address.substring(
+            task.address.length - 15,
+            task.address.length
+          )
+          : "Click to select wallet"
+          })`,
         callback_data: `/picker_task_wallet ${task.id}`,
       },
     ],
@@ -1610,12 +1583,12 @@ export const contractTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -1653,19 +1626,16 @@ export const contractTemplate = async (
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let dex = getDexTool(contract.address, contract.chain_id);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>⛽ GasPrice: ${currentGasPrice} Gwei</b>\n` +
     `<b>💵 price: $ ${price}</b>\n` +
@@ -1682,10 +1652,9 @@ export const contractTemplate = async (
       Number((total * Number(price)).toFixed(3))
     )}</b>\n\n` +
     `<b>📌 default address:</b>\n` +
-    `<b>${
-      user.default_address
-        ? user.default_address
-        : "There is no setting address"
+    `<b>${user.default_address
+      ? user.default_address
+      : "There is no setting address"
     }</b>\n` +
     `<b>🎉 Account${contract.symbol}: ${userCoinBalance} ${contract.symbol}</b>\n` +
     `<b>💰 value: ${exchangeValue} ETH</b>\n` +
@@ -1693,14 +1662,13 @@ export const contractTemplate = async (
   const contractKeyboard = [
     [
       {
-        text: `💳 (${
-          user.default_address
-            ? user.default_address.substring(
-                user.default_address.length - 15,
-                user.default_address.length
-              )
-            : "Click to select wallet"
-        })`,
+        text: `💳 (${user.default_address
+          ? user.default_address.substring(
+            user.default_address.length - 15,
+            user.default_address.length
+          )
+          : "Click to select wallet"
+          })`,
         callback_data: "picker_wallet",
       },
     ],
@@ -1755,7 +1723,7 @@ export const homeTemplate = (bot: any, msg: any) => {
     bot
       .sendMessage(
         msg.chat.id,
-        `<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n\n<b>welcomedandaobot</b>\n\n<b>BookbotDoes not constitute investment advice，Please bear the risks</b>\n\n<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n`,
+        `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`,
         {
           parse_mode: "HTML",
           reply_markup: {
@@ -1768,8 +1736,74 @@ export const homeTemplate = (bot: any, msg: any) => {
       });
   });
 };
+export const buyModesTemplate = async (bot: any, msg: any) => {
+  let setting: any = await prisma.setting.findFirst({
+    where: {
+      telegram_id: msg.from.id,
+    },
+  });
+
+  return new Promise<number>(async (resolve) => {
+    bot
+      .sendMessage(
+        msg.chat.id,
+        `<b></b>\n\n\n\n<b>☑ Select buy mode. </b>\n\n<b>You are on ${setting.trading_mode} mode now.</b>\n\n\n\n<b></b>`,
+        {
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: buyModesKeyboard,
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.message_id);
+      });
+  });
+};
+export const settingTemplate = (bot: any, msg: any) => {
+  return new Promise<number>(async (resolve) => {
+    bot
+      .sendMessage(
+        msg.chat.id,
+        `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`,
+        {
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: settingsKeyboard,
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.message_id);
+      });
+  });
+};
+export const classicBuySettingTemplate = (bot: any, msg: any) => {
+  let str = `<b></b>\n\n\n\n<b>🛠 Please choose one.</b>\n\n\n\n<b></b>`;
+  bot.editMessageText(str, {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+    parse_mode: "HTML",
+    reply_to_message_id: msg.message_id,
+    reply_markup: {
+      inline_keyboard: classicBuySettingKeyboard,
+    },
+  });
+};
+export const classicRampBuySettingTemplate = (bot: any, msg: any) => {
+  let str = `<b></b>\n\n<b>Here are your ramp amounts.</b>\n\n<b>1️⃣ 10</b>\n\n<b>2️⃣ 20</b>\n\n<b>3️⃣ 30</b>\n\n<b>4️⃣ 40</b>\n\n\n\n\n\n<b></b>`;
+  bot.editMessageText(str, {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+    parse_mode: "HTML",
+    reply_to_message_id: msg.message_id,
+    reply_markup: {
+      inline_keyboard: classicRampBuySettingKeyboard,
+    },
+  });
+};
 export const goBackHomeTemplate = (bot: any, msg: any) => {
-  let str = `<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n\n<b>welcomedandaobot</b>\n\n<b>BookbotDoes not constitute investment advice，Please bear the risks</b>\n\n<b>📈📈📈📈📈📈📈📈📈📈📈📈</b>\n`;
+  let str = `<b></b>\n\n\n\n<b>🎉🎉🎉 Welcome! 🎉🎉🎉</b>\n\n\n\n<b></b>`;
   bot.editMessageText(str, {
     chat_id: msg.chat.id,
     message_id: msg.message_id,
@@ -1802,7 +1836,7 @@ export const networkTemplate = (bot: any, msg: any, chainIds: number[]) => {
 };
 export const addWalletTemplate = (bot: any, msg: any) => {
   let str =
-    "❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Please lose the way you choose to bind a wallet</b>";
+    "❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Please lose the way you choose to bind a wallet</b>";
   bot.editMessageText(str, {
     chat_id: msg.message.chat.id,
     message_id: msg.message.message_id,
@@ -1820,13 +1854,13 @@ export const walletTemplate = async (bot: any, msg: any) => {
   });
   let str = ``;
   if (wallets.length) {
-    str += `❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Total binding（${wallets.length}）Wallet</b>\n\n`;
+    str += `❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Total binding（${wallets.length}）Wallet</b>\n\n`;
     wallets.forEach((item, index) => {
       str += `<b>(${index + 1}) ${item.address}</b>\n`;
     });
   } else {
     str =
-      "❗️❗️❗️ <b>Please recognize the DogBOT，Do not send it to the scammer robot</b>\n\n<b>Not yet binded wallet，Click the new button below to add a wallet</b>\n\n";
+      "❗️❗️❗️ <b>Please recognize the APEBOT，Do not send it to the scammer robot</b>\n\n<b>Not yet binded wallet，Click the new button below to add a wallet</b>\n\n";
   }
   bot.editMessageText(str, {
     chat_id: msg.message.chat.id,
@@ -1907,14 +1941,13 @@ export const handleWatchTemplate = async (
     const followKeyboard = [
       [
         {
-          text: `💳 (${
-            account
-              ? account.address.substring(
-                  account.address.length - 15,
-                  account.address.length
-                )
-              : "Click to select wallet"
-          })`,
+          text: `💳 (${account
+            ? account.address.substring(
+              account.address.length - 15,
+              account.address.length
+            )
+            : "Click to select wallet"
+            })`,
           callback_data: `/picker_follow_wallet ${find.id}`,
         },
       ],
@@ -1983,9 +2016,8 @@ export const watchTemplate = async (bot: any, msg: any) => {
   let watchKeyboard = [];
   if (watchList.length) {
     str += `👀 *List of listening address*\n\n`;
-    str += `*Co -prisoner listening(${
-      watchList.length
-    })Address，Remaining can be added(${10 - watchList.length})Address*\n\n`;
+    str += `*Co -prisoner listening(${watchList.length
+      })Address，Remaining can be added(${10 - watchList.length})Address*\n\n`;
     watchList.forEach((item, index) => {
       let isFollow =
         item.follow_buy == 1 || item.follow_sell == 1 ? "（In order）\n" : "";
@@ -1999,13 +2031,13 @@ export const watchTemplate = async (bot: any, msg: any) => {
         "\n";
       let text = item.name
         ? `${item.address.substring(
-            item.address.length - 16,
-            item.address.length
-          )}(${item.name})`
+          item.address.length - 16,
+          item.address.length
+        )}(${item.name})`
         : `${item.address.substring(
-            item.address.length - 16,
-            item.address.length
-          )}`;
+          item.address.length - 16,
+          item.address.length
+        )}`;
       watchKeyboard.push([
         {
           text: text,
@@ -2066,12 +2098,12 @@ export const editorWatchLogBuyTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -2109,19 +2141,16 @@ export const editorWatchLogBuyTemplate = async (
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let dex = getDexTool(contract.address, contract.chain_id);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Buy：${watchLog.amount_in} ETH</b>\n` +
     `<b>💵 income：${watchLog.amount_out} ${contract.symbol}</b>\n` +
@@ -2220,12 +2249,12 @@ export const editorWatchLogSellTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -2263,19 +2292,16 @@ export const editorWatchLogSellTemplate = async (
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let dex = getDexTool(contract.address, contract.chain_id);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Sell：${watchLog.amount_in} ${contract.symbol}</b>\n` +
     `<b>💵 income：${watchLog.amount_out} ETH</b>\n` +
@@ -2374,12 +2400,12 @@ export const watchLogBuyTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -2417,19 +2443,16 @@ export const watchLogBuyTemplate = async (
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let dex = getDexTool(contract.address, contract.chain_id);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Buy：${watchLog.amount_in} ETH</b>\n` +
     `<b>💵 income：${watchLog.amount_out} ${contract.symbol}</b>\n` +
@@ -2526,12 +2549,12 @@ export const watchLogSellTemplate = async (
   if (contract.fastGetContractPrice.pool) {
     poolEthBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve0)
         : Number(contract.fastGetContractPrice.pool.reserve1);
     poolTokenBalance =
       contract.fastGetContractPrice.pool.token0 ==
-      Config[contract.chain_id].stableContract[0]
+        Config[contract.chain_id].stableContract[0]
         ? Number(contract.fastGetContractPrice.pool.reserve1)
         : Number(contract.fastGetContractPrice.pool.reserve0);
     poolPercent = Number(
@@ -2569,19 +2592,16 @@ export const watchLogSellTemplate = async (
   let total = Number(contract.total_supply) / 10 ** Number(contract.decimals);
   let dex = getDexTool(contract.address, contract.chain_id);
   let str =
-    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${
-      chainEnum[contract.chain_id]
+    `🎰 <b>${contract.name}(<a href='${scan}'>$${contract.symbol}</a>) # ${chainEnum[contract.chain_id]
     }</b>\n\n` +
     `<b>🏫 Contract address:</b>\n` +
     `<b>${contract.address}</b>\n` +
     `<b>🏤 Pool address:</b>\n` +
-    `<b>${
-      contract.fastGetContractPrice.pool
-        ? contract.fastGetContractPrice.pool.pool
-        : "No pool"
+    `<b>${contract.fastGetContractPrice.pool
+      ? contract.fastGetContractPrice.pool.pool
+      : "No pool"
     }</b>\n\n` +
-    `<b>🛒 DEX: ${
-      dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
+    `<b>🛒 DEX: ${dexNames[contract.chain_id][contract.fastGetContractPrice.pool.version]
     }</b>\n` +
     `<b>💵 Sell：${watchLog.amount_in} ${contract.symbol}</b>\n` +
     `<b>💵 income：${watchLog.amount_out} ETH</b>\n` +
@@ -2655,8 +2675,7 @@ export const topFiveMinutesTemplate = async (
   list.forEach((item) => {
     let scan = getScan(item.address, item.chainId);
     str +=
-      `🎰 <b>(<a href='${scan}'>$${item.symbol}</a>) # ${
-        chainEnum[item.chainId]
+      `🎰 <b>(<a href='${scan}'>$${item.symbol}</a>) # ${chainEnum[item.chainId]
       }</b>\n` +
       `🔁 <b>Number of transactions：${item.count} (${item.countPercent} %)</b>\n` +
       `👬 <b>Holder：${item.currentHolders} (${item.holdersPercent} %)</b>\n` +
@@ -2689,8 +2708,7 @@ export const topFifteenMinutesTemplate = async (
   list.forEach((item) => {
     let scan = getScan(item.address, item.chainId);
     str +=
-      `🎰 <b>(<a href='${scan}'>$${item.symbol}</a>) # ${
-        chainEnum[item.chainId]
+      `🎰 <b>(<a href='${scan}'>$${item.symbol}</a>) # ${chainEnum[item.chainId]
       }</b>\n` +
       `🔁 <b>Number of transactions：${item.count} (${item.countPercent} %)</b>\n` +
       `👬 <b>30The highest holder in minutes：${item.hightHolders}</b>\n` +
@@ -2749,12 +2767,22 @@ export const addWalletKeyboard = [
 export const walletKeyboard = [
   [
     {
-      text: "💳 New wallet",
+      text: "💳 New Wallet",
       callback_data: "add_wallet",
     },
     {
-      text: "❌ Delete wallet",
+      text: "❌ Delete Wallet",
       callback_data: "delete_wallet",
+    },
+  ],
+  [
+    {
+      text: "🗝 Export Private Key",
+      callback_data: "export_wallet",
+    },
+    {
+      text: "👬 Withdraw Wallet",
+      callback_data: "withdraw_wallet",
     },
   ],
   [...defaultKeyboard],
@@ -2762,30 +2790,127 @@ export const walletKeyboard = [
 export const homeKeyboard = [
   [
     {
+      text: "🧮 Buy Modes",
+      callback_data: "buy_modes",
+    },
+    {
+      text: "💰 Assets",
+      callback_data: "assets",
+    },
+    {
+      text: "🔍 CopyTrading",
+      callback_data: "copytrading",
+    },
+  ],
+  [
+    {
       text: "💳 wallet",
       callback_data: "wallet",
     },
+    {
+      text: "⚙ Settings",
+      callback_data: "settings",
+    },
+  ],
+];
+export const buyModesKeyboard = [
+  [
+    {
+      text: "🚗 Classic Buy",
+      callback_data: "add_rush",  // classic_buy
+    },
+    {
+      text: "🏍 Auto Buy",
+      callback_data: "auto_buy",
+    },
+    {
+      text: "🚌 Bundle Buy",
+      callback_data: "bundle_buy",
+    },
+  ],
+  defaultKeyboard
+];
+export const settingsKeyboard = [
+  [
+    {
+      text: "🚗 Classic Buy",
+      callback_data: "classic_buy_setting",
+    },
+    {
+      text: "🏍 Auto Buy",
+      callback_data: "auto_buy_setting",
+    },
   ],
   [
     {
-      text: "🔭 Monitoring address",
-      callback_data: "watch",
+      text: "🚌 Bundle Buy",
+      callback_data: "bundle_buy_setting",
+    },
+    {
+      text: "🔍 CopyTrading",
+      callback_data: "copy_trading_setting",
+    },
+  ],
+  defaultKeyboard
+];
+export const classicBuySettingKeyboard = [
+  [
+    {
+      text: "🎡 Quick Buy",
+      callback_data: "quick_buy_setting",
+    },
+    {
+      text: "🎨 Ramp Buy",
+      callback_data: "ramp_buy_setting",
     },
   ],
   [
     {
-      text: "💰 Grabbing",
-      callback_data: "rush",
+      text: "💠 % Take Profit",
+      callback_data: "set_percent_profit",
     },
     {
-      text: "🔍 Smart money search",
-      callback_data: "smart_money",
+      text: "🌐 Marketcap Type Profit",
+      callback_data: "set_marketcap_profit",
     },
   ],
   [
     {
-      text: "🌎 Node settings",
-      callback_data: "set_prc",
+      text: "🕵️‍♂️ Dev Sell Setting On",
+      callback_data: "dev_sell_on",
+    },
+    {
+      text: "🕵️‍♀️ Dev Sell Setting Off",
+      callback_data: "dev_sell_off",
     },
   ],
+  backToSettingKeyboard
+];
+export const classicRampBuySettingKeyboard = [
+  [
+    {
+      text: "1️⃣ Update amount",
+      callback_data: "update_ramp_amount_1",
+    },
+  ],
+  [
+    {
+      text: "2️⃣ Update amount",
+      callback_data: "update_ramp_amount_2",
+    },
+  ],
+  [
+    {
+      text: "3️⃣ Update amount",
+      callback_data: "update_ramp_amount_3",
+    },
+  ],
+  [
+    {
+      text: "4️⃣ Update amount",
+      callback_data: "update_ramp_amount_4",
+    },
+  ],
+
+  backToSettingKeyboard
 ];

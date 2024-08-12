@@ -39,6 +39,10 @@ import DANDAO, {
 } from "./dandao";
 import {
   homeTemplate,
+  buyModesTemplate,
+  settingTemplate,
+  classicBuySettingTemplate,
+  classicRampBuySettingTemplate,
   walletTemplate,
   addWalletTemplate,
   goBackHomeTemplate,
@@ -1201,6 +1205,12 @@ export class swapBot {
   }
   //Listening instruction
   listenCommand() {
+    this.bot.onText(/\/start/, async (msg, match) => {
+      if (msg.from.id == msg.chat.id) {
+        this.setUserId(msg);
+        homeTemplate(this.bot, msg);
+      }
+    });
     this.bot.onText(/\/menu/, async (msg, match) => {
       if (msg.from.id == msg.chat.id) {
         homeTemplate(this.bot, msg);
@@ -1230,8 +1240,11 @@ export class swapBot {
     });
     this.bot.onText(/\/whitelist (\w+)/, async (msg, match) => {
       if (this.isAdmin(msg.from.username)) {
-        console.log({ msg, match })
-        // await prisma
+        await prisma.whitelist.create({
+          data: {
+            telegram_name: match[1],
+          }
+        })
         this.bot.sendMessage(msg.chat.id, `Whitelist success`);
       } else {
         this.bot.sendMessage(
@@ -1384,6 +1397,7 @@ export class swapBot {
     const web3 = new Web3();
     this.bot.on("message", async (msg: Message) => {
       if (msg.from.id == msg.chat.id) {
+        this.isWhiteUser(msg)
         let user = await this.getUserSetting(msg.from.id);
         if (
           msg.reply_to_message &&
@@ -1397,8 +1411,29 @@ export class swapBot {
           //Find it from the Curry first，If not, look at it from the block
           this.sendContract(msg.text, msg);
         }
+
       }
     });
+  }
+
+  async setUserId(msg: Message) {
+    let find: any = await prisma.whitelist.findFirst(
+      {
+        where: {
+          telegram_name: msg.from.username,
+        }
+      }
+    )
+    if (find) {
+      await prisma.whitelist.update({
+        where: {
+          id: find.id
+        },
+        data: {
+          telegram_id: msg.from.id
+        }
+      });
+    }
   }
   async sendContract(address: string, msg: any) {
     const web3 = new Web3();
@@ -1510,6 +1545,29 @@ export class swapBot {
     }
     return find ? find : insert;
   }
+
+  async isWhiteUser(msg: any) {
+    if (this.isAdmin(msg.from.username)) {
+      return true;
+    }
+
+    let find: any = await prisma.whitelist.findFirst(
+      {
+        where: {
+          telegram_name: msg.from.username,
+        }
+      }
+    )
+    if (find) {
+      return true;
+    } else {
+      this.bot.sendMessage(
+        msg.chat.id,
+        `You don't have permission to use this bot.`
+      );
+      return false;
+    }
+  }
   //monitorbotButton
   botQuery() {
     this.bot.on("callback_query", async (query) => {
@@ -1520,6 +1578,33 @@ export class swapBot {
   //Surveying instruction
   switchReplyMethod(msg: Message, method: string) {
     switch (method) {
+      case "classic_buy":
+        console.log(msg);
+        break;
+      case "quick_buy_setting":
+        this.quickBuySetting(msg);
+        break;
+      case "update_ramp_amount_1":
+        this.rampBuySetting(msg, 1);
+        break;
+      case "update_ramp_amount_2":
+        this.rampBuySetting(msg, 2);
+        break;
+      case "update_ramp_amount_3":
+        this.rampBuySetting(msg, 3);
+        break;
+      case "update_ramp_amount_4":
+        this.rampBuySetting(msg, 4);
+        break;
+      case "set_percent_profit":
+        this.percentTakeProfitSetting(msg);
+        break;
+      case "dev_sell_on":
+        this.setDevSell(msg, 1);
+        break;
+      case "auto_buy_setting":
+        this.autoBuySetting(msg);
+        break;
       //Import wallet
       case "import_wallet":
         this.addWallet(msg);
@@ -1971,6 +2056,11 @@ export class swapBot {
     newUser.log_id = 0;
     this.updateUserSetting(newUser);
   }
+
+  // Select Classic Buy
+  async handleClassicBuy(msg: Message) {
+
+  }
   //Delete the binding wallet
   async deleteWallet(msg: Message) {
     let address = msg.text;
@@ -2177,6 +2267,119 @@ export class swapBot {
       }
     }
   }
+
+  // quick buy setting
+  async quickBuySetting(msg: Message) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    user.classic_mode = "quick";
+    user.quick_buy_amount = msg.text;
+    this.updateUserSetting(user);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Quick Buy amount successfully.`);
+  }
+
+  // ramp buy setting
+  async rampBuySetting(msg: Message, index: number) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    let indexString = '';
+    switch (index) {
+      case 1:
+        indexString = '1st';
+        break;
+      case 2:
+        indexString = '2nd';
+        break;
+      case 3:
+        indexString = '3rd';
+        break;
+      default:
+        indexString = `${index}th`;
+    }
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to Classic Ramp Buy ${indexString} amount successfully.`);
+  }
+
+  // percent take profit setting
+  async percentTakeProfitSetting(msg: Message) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text}% to take profit mode successfully.`);
+  }
+
+  // percent take profit setting
+  async setDevSell(msg: Message, mode: number) {
+    if (mode) {
+      let user = await this.getUserSetting(msg.from.id);
+      this.bot.deleteMessage(msg.chat.id, msg.message_id);
+      this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+      let query = user.query;
+      query.data = "settings";
+      this.switchRouter(query);
+      user.query = "";
+      user.reaction_id = 0;
+      user.reaction_method = "";
+      user.set_type = 0;
+      user.log_id = 0;
+      this.updateUserSetting(user);
+      this.bot.sendMessage(msg.chat.id, `Turn on Dev sell mode successfully.`);
+    } else {
+      settingTemplate(this.bot, msg);
+      this.bot.sendMessage(msg.chat.id, `Turn off Dev sell mode successfully.`);
+    }
+  }
+
+  // marketcap take profit setting
+  async setMarketcapProfit(msg: Message) {
+    settingTemplate(this.bot, msg);
+    this.bot.sendMessage(msg.chat.id, `Set Marketcap take profit mode successfully.`);
+  }
+
+  // auto buy setting
+  async autoBuySetting(msg: Message) {
+    let user = await this.getUserSetting(msg.from.id);
+    this.bot.deleteMessage(msg.chat.id, msg.message_id);
+    this.bot.deleteMessage(msg.chat.id, user.reaction_id);
+    let query = user.query;
+    query.data = "settings";
+    this.switchRouter(query);
+    user.query = "";
+    user.reaction_id = 0;
+    user.reaction_method = "";
+    user.set_type = 0;
+    user.log_id = 0;
+    this.updateUserSetting(user);
+    this.bot.sendMessage(msg.chat.id, `Set ${msg.text} to reach to autosell successfully.`);
+  }
+
   //Add wallet
   async addWallet(msg: Message) {
     let privateKey = msg.text;
@@ -2383,6 +2586,195 @@ export class swapBot {
       //Homepage routing
       case "home":
         goBackHomeTemplate(this.bot, query.message);
+        break;
+      case "buy_modes":
+        buyModesTemplate(this.bot, query.message);
+        break;
+      case "classic_buy":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input contract address.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "add_rush";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "settings":
+        settingTemplate(this.bot, query.message);
+        break;
+      case "classic_buy_setting":
+        classicBuySettingTemplate(this.bot, query.message);
+        break;
+      case "quick_buy_setting":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input amount to quick buy.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "quick_buy_setting";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "ramp_buy_setting":
+        classicRampBuySettingTemplate(this.bot, query.message);
+        break;
+      case "update_ramp_amount_1":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 1st Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_1";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_2":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 2nd Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_2";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_3":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 3rd Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_3";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "update_ramp_amount_4":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input 4th Ramp amount to update.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "update_ramp_amount_4";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "set_percent_profit":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input % take profit.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "set_percent_profit";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "dev_sell_on":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input dev threshold.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "dev_sell_on";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
+        break;
+      case "dev_sell_off":
+        this.setDevSell(query.message, 0);
+        break;
+      case "set_marketcap_profit":
+        this.setMarketcapProfit(query.message);
+        break;
+      case "auto_buy_setting":
+        this.bot
+          .sendMessage(
+            query.message.chat.id,
+            `Input target amount to reach to autosell.`,
+            {
+              reply_markup: {
+                force_reply: true,
+              },
+            }
+          )
+          .then(async (res) => {
+            let user = await this.getUserSetting(query.from.id);
+            user.reaction_id = res.message_id;
+            user.reaction_method = "auto_buy_setting";
+            user.query = query;
+            this.updateUserSetting(user);
+          });
         break;
       case "rush":
         rushTemplate(this.bot, query.message);
